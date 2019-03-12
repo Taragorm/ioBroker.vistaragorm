@@ -1,0 +1,36 @@
+{
+  "name": "iobroker.vis-taragorm",
+  "version": "0.0.1",
+  "description": "Some simple visualisations",
+  "author": {
+    "name": "Taragorm",
+    "email": "taragorm@zoho.eu"
+  },
+  "homepage": "https://github.com/Taragorm/ioBroker.vis-taragorm",
+  "license": "MIT",
+  "keywords": [
+    "vis",
+    "taragorm",
+    "iobroker"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Taragorm/ioBroker.vis-taragorm"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@iobroker/testing": "^1.1.4",
+    "@types/gulp": "^4.0.5",
+    "axios": "^0.18.0",
+    "gulp": "^4.0.0"
+  },
+  "main": "widgets/vis-taragorm.html",
+  "scripts": {
+    "test:package": "mocha test/package --exit",
+    "test": "npm run test:package"
+  },
+  "bugs": {
+    "url": "https://github.com/Taragorm/ioBroker.vis-taragorm/issues"
+  },
+  "readmeFilename": "README.md"
+}

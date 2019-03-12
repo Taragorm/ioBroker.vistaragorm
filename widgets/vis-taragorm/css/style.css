@@ -1,0 +1,21 @@
+/* Style your widget here */
+.vis-taragorm-class {
+    font-style: italic;
+}
+
+
+.vis-taragorm-class table {
+    border-collapse:collapse;
+    border:solid black 1px;
+    border-radius:6px;
+    -moz-border-radius:6px;
+}
+
+.vis-taragorm-class th {
+    text-align: center;
+}
+
+.vis-taragorm-class td {
+    text-align: center;
+}
+

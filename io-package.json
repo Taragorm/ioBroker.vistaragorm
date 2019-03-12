@@ -1,0 +1,79 @@
+{
+    "common": {
+        "name": "vis-taragorm",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "Taragorm's Visualisations",
+        "titleLang": {
+            "en": "Taragorm's Visualisations",
+            "de": "Taragorms Visualisierungen",
+            "ru": "Визуализации Тарагорма",
+            "pt": "Visualizações do Taragorm",
+            "nl": "Taragorm's visualisaties",
+            "fr": "Visualisations de Taragorm",
+            "it": "Taragorm's Visualisations",
+            "es": "Las visualizaciones de Taragorm",
+            "pl": "Wizualizacje Taragorma",
+            "zh-cn": "Taragorm的可视化"
+        },
+        "desc": {
+            "en": "Some simple visualisations",
+            "de": "Einige einfache Visualisierungen",
+            "ru": "Несколько простых визуализаций",
+            "pt": "Algumas visualizações simples",
+            "nl": "Enkele eenvoudige visualisaties",
+            "fr": "Quelques visualisations simples",
+            "it": "Alcune visualizzazioni semplici",
+            "es": "Algunas visualizaciones simples",
+            "pl": "Kilka prostych wizualizacji",
+            "zh-cn": "一些简单的可视化"
+        },
+        "authors": [
+            "Taragorm <taragorm@zoho.eu>"
+        ],
+        "keywords": [
+            "vis",
+            "taragorm",
+            "iobroker"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "vis-taragorm.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Taragorm/ioBroker.vis-taragorm/master/admin/vis-taragorm.png",
+        "readme": "https://github.com/Taragorm/ioBroker.vis-taragorm/blob/master/README.md",
+        "loglevel": "info",
+        "restartAdapters": [
+            "vis"
+        ],
+        "localLink": "%web_protocol%://%ip%:%web_port%/vis/edit.html",
+        "onlyWWW": true,
+        "noConfig": true,
+        "singleton": true,
+        "type": "visualization-widgets",
+        "mode": "once",
+        "dependencies": [
+            "vis"
+        ]
+    },
+    "native": {
+        "option1": true,
+        "option2": "42"
+    },
+    "objects": [],
+    "instanceObjects": []
+}
