@@ -141,7 +141,7 @@ vis.binds["vistaragorm_nbox"] = {
     setValue: function($div, data, newVal, ix) {
         let fmt = data['format'+ix] || "%.1f";
     
-        $div.find('.vis_taragorm_nbox-mv' + ix ).html( sprintf(fmt, newVal) );
+        $div.find('.vis_taragorm_nbox-mv' + ix ).html( newVal ? sprintf(fmt, newVal) : "?" );
 
         if(ix==1)
         {
@@ -214,13 +214,16 @@ vis.binds["vistaragorm_mvsp"] = {
     setValues: function($div, data, mv, sp) {
         let fmt = data.format || "%.1f &deg;C";
     
-        $div.find('.vis_taragorm_nbox-mv').html( sprintf(fmt, mv) );
-        $div.find('.vis_taragorm_nbox-sp').html( sprintf(fmt, sp) );
+        $div.find('.vis_taragorm_nbox-mv').html( mv ? sprintf(fmt, mv) : "?" );
+        $div.find('.vis_taragorm_nbox-sp').html( sp ? sprintf(fmt, sp) : "?" );
         
-        var vect = taragorm_common.getColourVector(data.colours);
-        var mvbg = taragorm_common.getBackground(mv, vect, data.interpolate);
-        var spbg = taragorm_common.getBackground(sp, vect, data.interpolate);
-        $div.find('.vis_taragorm_nbox-table').css('background', 'radial-gradient('+ spbg+', '+ mvbg + ')' );    
+        if(mv && sp)
+        {
+            var vect = taragorm_common.getColourVector(data.colours);
+            var mvbg = taragorm_common.getBackground(mv, vect, data.interpolate);
+            var spbg = taragorm_common.getBackground(sp, vect, data.interpolate);
+            $div.find('.vis_taragorm_nbox-table').css('background', 'radial-gradient('+ mvbg+', '+ spbg + ')' );    
+        }
     },
     
     createWidget: function (widgetID, view, data, style) {
