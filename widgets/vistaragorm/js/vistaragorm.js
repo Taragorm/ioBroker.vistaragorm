@@ -224,7 +224,6 @@ vis.binds["vistaragorm_mvsp"] = {
     },
     
     createWidget: function (widgetID, view, data, style) {
-        console.log("2nb");
         var $div = $('#' + widgetID);
         // if nothing found => wait
         if (!$div.length) {
