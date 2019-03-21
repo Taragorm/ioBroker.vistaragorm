@@ -15,7 +15,8 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Taragor
 
 ## vistaragorm adapter for ioBroker
 
-Some simple Visulaisations
+Some simple Visualisations
+
 
 ## Changelog
 
