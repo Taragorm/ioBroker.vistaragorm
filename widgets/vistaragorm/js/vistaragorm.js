@@ -122,6 +122,19 @@ const taragorm_common = {
             console.error("Can't parse as JSON:", vname);
             return this.$error;
         }
+    },
+
+    format: function(fmt, v) {
+        if(v==null || v==undefined)
+            return "?";
+        
+        try {
+            return sprintf(fmt,v);
+        } catch(ex) {
+            console.error("Bad format:"+ex);
+            return "?!";
+        }
+
     }
 };
 
@@ -141,7 +154,7 @@ vis.binds["vistaragorm_nbox"] = {
     setValue: function($div, data, newVal, ix) {
         let fmt = data['format'+ix] || "%.1f";
     
-        $div.find('.vis_taragorm_nbox-mv' + ix ).html( newVal ? sprintf(fmt, newVal) : "?" );
+        $div.find('.vis_taragorm_nbox-mv' + ix ).html( taragorm_common.format(fmt, newVal) );
 
         if(ix==1)
         {
@@ -214,8 +227,8 @@ vis.binds["vistaragorm_mvsp"] = {
     setValues: function($div, data, mv, sp) {
         let fmt = data.format || "%.1f &deg;C";
     
-        $div.find('.vis_taragorm_nbox-mv').html( mv ? sprintf(fmt, mv) : "?" );
-        $div.find('.vis_taragorm_nbox-sp').html( sp ? sprintf(fmt, sp) : "?" );
+        $div.find('.vis_taragorm_nbox-mv').html( taragorm_common.format(fmt, mv) );
+        $div.find('.vis_taragorm_nbox-sp').html( taragorm_common.format(fmt, sp) );
         
         if(mv && sp)
         {
