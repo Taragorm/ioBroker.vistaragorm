@@ -18,14 +18,14 @@ $.get( "adapter/vistaragorm/words.js", function(script) {
 
 const taragorm_common = {
 
-    indoor: [
+    $indoor: [
     	{ t:15, b: 0x6060ff },
     	{ t:18, b: 0x00c000 },
     	{ t:19, b: 0xb0b000 },
     	{ t:22, b: 0xff0000 }
     ],    
     
-    outdoor: [
+    $outdoor: [
     	{ t:8, b: 0x6060ff },
     	{ t:12, b: 0x00c000 },
     	{ t:18, b: 0xb0b000 },
@@ -87,12 +87,31 @@ const taragorm_common = {
     },
 
     getBackground : function(t, vect, interp) {
-        vect = vect || this.indoor;
+        vect = vect || this.$indoor;
         
         if(interp) {
             return this.interpol(vect,t);
         } else {
             return this.lookup(vect,t);
+        }
+    },
+
+
+    getColourVector: function(vname) {
+        if(!vname)
+            return this.$indoor;
+
+        if(vname.startsWith("$"))
+            return this[vname];
+
+        // try JSON
+        try {
+            return JSON.parse(vname);
+        }
+        catch(ex)
+        {
+            console.log("Can't parse as JSON:", vname);
+            return this.$indoor;
         }
     }
 };
@@ -110,18 +129,22 @@ vis.binds["vistaragorm_nbox"] = {
         }
     },
     
-    setValue: function($div, data, newVal) {
-        let fmt = data.format || "%.1fC";
+    setValue: function($div, data, newVal, ix) {
+        let fmt = data['format'+ix] || "%.1f";
     
-        $div.find('.vis_taragorm_nbox-value').html( sprintf(fmt, newVal) );
-        var bg = taragorm_common.getBackground(newVal, null, data.interpolate);
-        console.log("t="+newVal+" bg="+bg);
-        $div.find('.vis_taragorm_nbox-table').css('background-color', bg );    
+        $div.find('.vis_taragorm_nbox-mv' + ix ).html( sprintf(fmt, newVal) );
+
+        if(ix==1)
+        {
+            var vect = taragorm_common.getColourVector(data.colours);
+            var bg = taragorm_common.getBackground(newVal, vect, data.interpolate);
+            $div.find('.vis_taragorm_nbox-table').css('background-color', bg );    
+        }
     },
     
     createWidget: function (widgetID, view, data, style) {
-        console.log("1nb");
-    
+        const N = 3;
+
         var $div = $('#' + widgetID);
         // if nothing found => wait
         if (!$div.length) {
@@ -133,7 +156,12 @@ vis.binds["vistaragorm_nbox"] = {
         var text = '';
         text += "<table class='vis_taragorm_nbox-table' style='background-color:#00ff00'>";
         text += "<tr><th>" + (data.titleText || '') + "</th></tr>";
-        text += "<tr><td><span class='vis_taragorm_nbox-value'></span></td></th>";
+        for(let i=1; i<=N; ++i) {
+            if(data['mv'+i])
+                text += sprintf("<tr><td><span class='vis_taragorm_nbox-mv%d'></span></td></th>", i);
+        }
+
+
         text += "</table>";
         
         /*
@@ -147,26 +175,30 @@ vis.binds["vistaragorm_nbox"] = {
         $('#' + widgetID).html(text);
 
         
-        this.setValue($div, data, vis.states[data.oid + ".val"] );
         
         let self = this;
         // subscribe on updates of value
-        if (data.oid) {
-            vis.states.bind(data.oid + '.val', function (e, newVal, oldVal) {
-            self.setValue($div, data, newVal);
-            });
+        for(let i=1; i<=N; ++i) {
+            let mv = data["mv"+i];
+            if (mv) {
+                this.setValue($div, data, vis.states[mv + ".val"], i );
+                vis.states.bind(mv + '.val', function (e, newVal, oldVal) {
+                    self.setValue($div, data, newVal, i);
+                });
+            }
         }
+        
     }
 };
 
 
-vis.binds["vistaragorm_2nbox"] = {
-    version: "0.0.1b",
+vis.binds["vistaragorm_mvsp"] = {
+    version: "0.0.1",
     
     showVersion: function () {
-        if (vis.binds["vistaragorm_2nbox"].version) {
-            console.log('Version vistaragorm_2nbox: ' + vis.binds["vistaragorm_2nbox"].version);
-            vis.binds["vistaragorm_2nbox"].version = null;
+        if (vis.binds["vistaragorm_mvsp"].version) {
+            console.log('Version vistaragorm_mvsp: ' + vis.binds["vistaragorm_mvsp"].version);
+            vis.binds["vistaragorm_mvsp"].version = null;
         }
     },
     
@@ -176,8 +208,9 @@ vis.binds["vistaragorm_2nbox"] = {
         $div.find('.vis_taragorm_nbox-mv').html( sprintf(fmt, mv) );
         $div.find('.vis_taragorm_nbox-sp').html( sprintf(fmt, sp) );
         
-        var mvbg = taragorm_common.getBackground(mv, null, data.interpolate);
-        var spbg = taragorm_common.getBackground(sp, null, data.interpolate);
+        var vect = taragorm_common.getColourVector(data.colours);
+        var mvbg = taragorm_common.getBackground(mv, vect, data.interpolate);
+        var spbg = taragorm_common.getBackground(sp, vect, data.interpolate);
         $div.find('.vis_taragorm_nbox-table').css('background', 'radial-gradient('+ spbg+', '+ mvbg + ')' );    
     },
     
@@ -231,5 +264,10 @@ vis.binds["vistaragorm_2nbox"] = {
     }
 };
 
+
+
+
 vis.binds["vistaragorm_nbox"].showVersion();
-vis.binds["vistaragorm_2nbox"].showVersion();
+vis.binds["vistaragorm_mvsp"].showVersion();
+
+

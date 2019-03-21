@@ -101,29 +101,30 @@
 
 -->
 
-<script id="tplVistaragormHelper"
+<script id="tplVistaragormHelper_nbox"
         type="text/ejs"
         class="vis-tpl"
-        data-vis-prev='<div class="vis-taragorm-class"><table class="vis_taragorm_nbox-table" style="background-color:#00ff00"><tr><th>TITLE</th></tr><tr><td> 23.4C </td></tr></div>'
-        data-vis-attrs="oid/id;titleText/text;format/text;interpolate/checkbox;"
+        data-vis-prev='<div class="vis-taragorm-class"><table class="vis_taragorm_nbox-table" style="background-color:#00ff00"><tr><th>TITLE</th></tr><tr><td> 23.4C </td></tr><tr><td> 56.7C </td></tr><tr><td> 23.4C </td></tr></div>'
+        data-vis-attrs="mv1/id;format1/text;mv2/id;format2/text;mv3/id;format3/text;titleText/text;interpolate/checkbox;colours/text[$inside]"
         data-vis-set="vistaragorm"
         data-vis-type="helper"
-        data-vis-name="Helper">
+        data-vis-name="1-3 values with bg">
     <div class="vis-widget <%== this.data.attr('class') %>" style="overflow:visible; width: 230px; height: 210px" id="<%= this.data.attr('wid') %>"><%
         vis.binds.vistaragorm_nbox.createWidget(this.data.wid, this.view, this.data, this.style);
     %></div>
 </script>
 
-<script id="tplVistaragormHelper_2nbox"
+
+<script id="tplVistaragormHelper_mvsp"
         type="text/ejs"
         class="vis-tpl"
         data-vis-prev='<div class="vis-taragorm-class"> <table style="background: radial-gradient(#ff0000, #6060ff)"><tr><th>TITLE</th></tr><tr><td> 25.4C </td></tr><tr><td> 15.0C </td></tr></div>'
-        data-vis-attrs="mv/id;sp/id;titleText/text;format/text;interpolate/checkbox;"
+        data-vis-attrs="mv/id;sp/id;format/text;titleText/text;interpolate/checkbox;colours/text[$inside]"
         data-vis-set="vistaragorm"
         data-vis-type="helper"
-        data-vis-name="Helper">
+        data-vis-name="MV+SP">
     <div class="vis-widget <%== this.data.attr('class') %>" style="overflow:visible; width: 230px; height: 210px" id="<%= this.data.attr('wid') %>"><%
-        vis.binds.vistaragorm_2nbox.createWidget(this.data.wid, this.view, this.data, this.style);
+        vis.binds.vistaragorm_mvsp.createWidget(this.data.wid, this.view, this.data, this.style);
     %></div>
 </script>
 
