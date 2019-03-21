@@ -18,6 +18,10 @@ $.get( "adapter/vistaragorm/words.js", function(script) {
 
 const taragorm_common = {
 
+    $error: [
+    	{ t:1e32, b: 0xff00ff }
+    ],
+
     $indoor: [
     	{ t:15, b: 0x6060ff },
     	{ t:18, b: 0x00c000 },
@@ -101,8 +105,13 @@ const taragorm_common = {
         if(!vname)
             return this.$indoor;
 
-        if(vname.startsWith("$"))
-            return this[vname];
+        if(vname.startsWith("$")) {
+            let v = this[vname]; 
+            if(v)
+                return v;
+
+            console.error("No predef colours " + vname);
+        }
 
         // try JSON
         try {
@@ -110,8 +119,8 @@ const taragorm_common = {
         }
         catch(ex)
         {
-            console.log("Can't parse as JSON:", vname);
-            return this.$indoor;
+            console.error("Can't parse as JSON:", vname);
+            return this.$error;
         }
     }
 };
@@ -203,7 +212,7 @@ vis.binds["vistaragorm_mvsp"] = {
     },
     
     setValues: function($div, data, mv, sp) {
-        let fmt = data.format || "%.1fC";
+        let fmt = data.format || "%.1f &deg;C";
     
         $div.find('.vis_taragorm_nbox-mv').html( sprintf(fmt, mv) );
         $div.find('.vis_taragorm_nbox-sp').html( sprintf(fmt, sp) );
@@ -220,7 +229,7 @@ vis.binds["vistaragorm_mvsp"] = {
         // if nothing found => wait
         if (!$div.length) {
             return setTimeout(function () {
-                vis.binds["vistaragorm_2nbox"].createWidget(widgetID, view, data, style);
+                vis.binds["vistaragorm_mvsp"].createWidget(widgetID, view, data, style);
             }, 100);
         }
 
