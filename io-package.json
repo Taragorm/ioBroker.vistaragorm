@@ -1,6 +1,6 @@
 {
     "common": {
-        "name": "vis-taragorm",
+        "name": "vistaragorm",
         "version": "0.0.1",
         "news": {
             "0.0.1": {
@@ -30,32 +30,31 @@
             "zh-cn": "Taragorm的可视化"
         },
         "desc": {
-            "en": "Some simple visualisations",
-            "de": "Einige einfache Visualisierungen",
-            "ru": "Несколько простых визуализаций",
-            "pt": "Algumas visualizações simples",
-            "nl": "Enkele eenvoudige visualisaties",
-            "fr": "Quelques visualisations simples",
-            "it": "Alcune visualizzazioni semplici",
-            "es": "Algunas visualizaciones simples",
-            "pl": "Kilka prostych wizualizacji",
-            "zh-cn": "一些简单的可视化"
+            "en": "Some simple Visulaisations",
+            "de": "Einige einfache Visulaisations",
+            "ru": "Несколько простых Визуализаций",
+            "pt": "Algumas simples visulações",
+            "nl": "Enkele eenvoudige Visulaisaties",
+            "fr": "Quelques Visulaisations simples",
+            "it": "Alcune semplici visioni",
+            "es": "Algunas simples visitas",
+            "pl": "Niektóre proste wizualizacje",
+            "zh-cn": "一些简单的Visulaisations"
         },
         "authors": [
             "Taragorm <taragorm@zoho.eu>"
         ],
         "keywords": [
             "vis",
-            "taragorm",
             "iobroker"
         ],
         "license": "MIT",
         "platform": "Javascript/Node.js",
         "main": "main.js",
-        "icon": "vis-taragorm.png",
+        "icon": "vistaragorm.png",
         "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Taragorm/ioBroker.vis-taragorm/master/admin/vis-taragorm.png",
-        "readme": "https://github.com/Taragorm/ioBroker.vis-taragorm/blob/master/README.md",
+        "extIcon": "https://raw.githubusercontent.com/Taragorm/ioBroker.vistaragorm/master/admin/vistaragorm.png",
+        "readme": "https://github.com/Taragorm/ioBroker.vistaragorm/blob/master/README.md",
         "loglevel": "info",
         "restartAdapters": [
             "vis"

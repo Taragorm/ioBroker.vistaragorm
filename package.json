@@ -1,36 +1,37 @@
 {
-  "name": "iobroker.vis-taragorm",
+  "name": "iobroker.vistaragorm",
   "version": "0.0.1",
-  "description": "Some simple visualisations",
+  "description": "Some simple Visualisations",
   "author": {
     "name": "Taragorm",
     "email": "taragorm@zoho.eu"
   },
-  "homepage": "https://github.com/Taragorm/ioBroker.vis-taragorm",
+  "homepage": "https://github.com/Taragorm/ioBroker.vistaragorm",
   "license": "MIT",
   "keywords": [
     "vis",
-    "taragorm",
     "iobroker"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Taragorm/ioBroker.vis-taragorm"
+    "url": "https://github.com/Taragorm/ioBroker.vistaragorm"
   },
-  "dependencies": {},
+  "dependencies": {
+  "sprintf-js" : "^1.1.2"
+  },
   "devDependencies": {
-    "@iobroker/testing": "^1.1.4",
-    "@types/gulp": "^4.0.5",
+    "@iobroker/testing": "^1.2.0",
+    "@types/gulp": "^4.0.6",
     "axios": "^0.18.0",
     "gulp": "^4.0.0"
   },
-  "main": "widgets/vis-taragorm.html",
+  "main": "widgets/vistaragorm.html",
   "scripts": {
     "test:package": "mocha test/package --exit",
     "test": "npm run test:package"
   },
   "bugs": {
-    "url": "https://github.com/Taragorm/ioBroker.vis-taragorm/issues"
+    "url": "https://github.com/Taragorm/ioBroker.vistaragorm/issues"
   },
   "readmeFilename": "README.md"
 }

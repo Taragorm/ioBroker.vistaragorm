@@ -1,21 +1,21 @@
 <h1>
-    <img src="admin/vis-taragorm.png" width="64"/>
-    ioBroker.vis-taragorm
+    <img src="admin/vistaragorm.png" width="64"/>
+    ioBroker.vistaragorm
 </h1>
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.vis-taragorm.svg)](https://www.npmjs.com/package/iobroker.vis-taragorm)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.vis-taragorm.svg)](https://www.npmjs.com/package/iobroker.vis-taragorm)
-[![Dependency Status](https://img.shields.io/david/Taragorm/iobroker.vis-taragorm.svg)](https://david-dm.org/Taragorm/iobroker.vis-taragorm)
-[![Known Vulnerabilities](https://snyk.io/test/github/Taragorm/ioBroker.vis-taragorm/badge.svg)](https://snyk.io/test/github/Taragorm/ioBroker.vis-taragorm)
+[![NPM version](http://img.shields.io/npm/v/iobroker.vistaragorm.svg)](https://www.npmjs.com/package/iobroker.vistaragorm)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.vistaragorm.svg)](https://www.npmjs.com/package/iobroker.vistaragorm)
+[![Dependency Status](https://img.shields.io/david/Taragorm/iobroker.vistaragorm.svg)](https://david-dm.org/Taragorm/iobroker.vistaragorm)
+[![Known Vulnerabilities](https://snyk.io/test/github/Taragorm/ioBroker.vistaragorm/badge.svg)](https://snyk.io/test/github/Taragorm/ioBroker.vistaragorm)
 
-[![NPM](https://nodei.co/npm/iobroker.vis-taragorm.png?downloads=true)](https://nodei.co/npm/iobroker.vis-taragorm/)
+[![NPM](https://nodei.co/npm/iobroker.vistaragorm.png?downloads=true)](https://nodei.co/npm/iobroker.vistaragorm/)
 
-**Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/Taragorm/ioBroker.vis-taragorm/master.svg)](https://travis-ci.org/Taragorm/ioBroker.vis-taragorm)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Taragorm/ioBroker.vis-taragorm?branch=master&svg=true)](https://ci.appveyor.com/project/Taragorm/ioBroker-vis-taragorm/)
+**Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/Taragorm/ioBroker.vistaragorm/master.svg)](https://travis-ci.org/Taragorm/ioBroker.vistaragorm)
+Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Taragorm/ioBroker.vistaragorm?branch=master&svg=true)](https://ci.appveyor.com/project/Taragorm/ioBroker-vistaragorm/)
 
-## vis-taragorm adapter for ioBroker
+## vistaragorm adapter for ioBroker
 
-Some simple visualisations
+Some simple Visulaisations
 
 ## Changelog
 

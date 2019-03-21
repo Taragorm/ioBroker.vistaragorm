@@ -1,0 +1,18 @@
+/* Style your widget here */
+.vistaragorm-class {
+    font-style: italic;
+}
+
+table.vis_taragorm_nbox-table  {
+    border:solid black 1px;
+    border-radius:6px;
+/*    padding: 3px; */
+}
+
+.vis_taragorm_nbox-table th {
+    text-align: center;
+}
+
+.vis_taragorm_nbox-table td {
+    text-align: center;
+}
