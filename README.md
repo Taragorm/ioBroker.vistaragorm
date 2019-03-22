@@ -15,13 +15,56 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Taragor
 
 ## vistaragorm adapter for ioBroker
 
-Some simple Visualisations
+Some simple Visualisations.
 
+These are controls whose background colour changes to represent one or more of the values. While intended for temperatures, they could be used for other purposes.
+
+## nbox
+
+ * Shows 1 to 3 values in a vertical list with title
+ * Each value may be individually formatted (sprintf-like syntax)
+ * Background colour depends on value of 1st item.
+ * Background colour change can have sharp trasitions, or be interpolated
+
+
+## mvsp
+ * Shows 2 values (measured, setpoint) in a vertical list like ``nbox11`` above.
+ * Value may be custom formatted (sprintf-like syntax)
+ * Background colour depends on value of 1st item.
+ * Background colour change can have sharp trasitions, or be interpolated
+ * Background is a radial blend, with the mv coulr being the centre of the widget, and the outer colour being the sp derived colour. This gives a simeple 
+
+
+## common - colour scale.
+
+The ``colours`` attribute can take one of two forms, a predefined scale name, or a JSON representation of the scale.
+
+### Predefined scales
+
+| Scale Name | description |
+| ----------- | ----------- |
+| $indoor    | Indoor celcius |
+| $outdoor   | Outdoor celcius |
+
+
+### JSON scale
+A JSON temperature scale is an array of objects as follows:
+
+```json
+[
+    { t:15, b: 0x6060ff },
+    { t:18, b: 0x00c000 },
+    { t:19, b: 0xb0b000 },
+    { t:22, b: 0xff0000 }
+]
+```
+
+where ``t`` denotes the temperature and ``b`` denotes the background colour code, as a number. 
 
 ## Changelog
 
-### 0.0.1
-* (Taragorm) initial release
+### 0.0.1-2
+* (Taragorm) Dev
 
 ## License
 MIT License
