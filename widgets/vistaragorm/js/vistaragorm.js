@@ -152,6 +152,8 @@ vis.binds["vistaragorm_nbox"] = {
     },
     
     setValue: function($div, data, newVal, ix) {
+        console.log("setvalue ix=", ix);
+
         let fmt = data['format'+ix] || "%.1f";
     
         $div.find('.vis_taragorm_nbox-mv' + ix ).html( taragorm_common.format(fmt, newVal) );
@@ -176,13 +178,13 @@ vis.binds["vistaragorm_nbox"] = {
         }
 
         var text = '';
-        text += "<table class='vis_taragorm_nbox-table' style='background-color:#00ff00'>";
+        text += "<table class='vis_taragorm_nbox-table' style='background-color:#ff00ff'>";
         text += "<tr><th>" + (data.titleText || '') + "</th></tr>";
         for(let i=1; i<=N; ++i) {
-            if(data['mv'+i])
+            if(data['mv'+i]) {
                 text += sprintf("<tr><td><span class='vis_taragorm_nbox-mv%d'></span></td></th>", i);
+            }
         }
-
 
         text += "</table>";
         
@@ -200,14 +202,27 @@ vis.binds["vistaragorm_nbox"] = {
         
         let self = this;
         // subscribe on updates of value
+        let bound = [];
+
         for(let i=1; i<=N; ++i) {
-            let mv = data["mv"+i];
+            let mv = data["mv"+i];         
             if (mv) {
-                this.setValue($div, data, vis.states[mv + ".val"], i );
-                vis.states.bind(mv + '.val', function (e, newVal, oldVal) {
-                    self.setValue($div, data, newVal, i);
+                let mvv = mv+".val";
+                let iv = vis.states[mvv];
+                bound.push(mvv);
+                this.setValue($div, data, iv, i );
+                var ix = i;
+                console.log("bound ", mvv, " intial state=", iv, " ix=", ix);
+                vis.states.bind(mvv, function (e, newVal, oldVal) {
+                    console.log(mv,ix,"=", newVal," from ", oldVal );                    
+                    self.setValue($div, data, newVal, ix);
                 });
             }
+        }
+
+        if(bound.length) {
+            $div.data('bound', bound);
+            $div.data('bindHandler', this.setValues);
         }
         
     }
@@ -227,16 +242,19 @@ vis.binds["vistaragorm_mvsp"] = {
     setValues: function($div, data, mv, sp) {
         let fmt = data.format || "%.1f &deg;C";
     
+        if(mv==null)
+            mv = vis.states[data.mv+".val"];
+
+        if(sp==null)
+            sp = vis.states[data.sp+".val"];
+
         $div.find('.vis_taragorm_nbox-mv').html( taragorm_common.format(fmt, mv) );
         $div.find('.vis_taragorm_nbox-sp').html( taragorm_common.format(fmt, sp) );
         
-        if(mv && sp)
-        {
-            var vect = taragorm_common.getColourVector(data.colours);
-            var mvbg = taragorm_common.getBackground(mv, vect, data.interpolate);
-            var spbg = taragorm_common.getBackground(sp, vect, data.interpolate);
-            $div.find('.vis_taragorm_nbox-table').css('background', 'radial-gradient('+ mvbg+', '+ spbg + ')' );    
-        }
+        var vect = taragorm_common.getColourVector(data.colours);
+        var mvbg = taragorm_common.getBackground(mv, vect, data.interpolate);
+        var spbg = taragorm_common.getBackground(sp, vect, data.interpolate);
+        $div.find('.vis_taragorm_nbox-table').css('background', 'radial-gradient('+ mvbg+', '+ spbg + ')' );    
     },
     
     createWidget: function (widgetID, view, data, style) {
@@ -275,15 +293,25 @@ vis.binds["vistaragorm_mvsp"] = {
         
         let self = this;
         // subscribe on updates of values
+        let bound = [];
         if (data.mv) {
-            vis.states.bind(data.mv + '.val', function (e, newVal, oldVal) {
-            self.setValues($div, data, newVal, vis.states[data.sp + ".val"] );
+            let mvv = data.mv +".val";
+            bound.push( data.mvv );
+            vis.states.bind(mvv, function (e, newVal, oldVal) {
+                self.setValues($div, data, newVal, null );
             });
         }
         if (data.sp) {
-            vis.states.bind(data.sp + '.val', function (e, newVal, oldVal) {
-            self.setValues($div, data, vis.states[data.mv + ".val"], newVal );
+            let spv= data.sp+".val";
+            bound.push( spv );
+            vis.states.bind(spv, function (e, newVal, oldVal) {
+                self.setValues($div, data, null, newVal );
             });
+        }
+
+        if(bound.length) {
+            $div.data('bound', bound);
+            $div.data('bindHandler', this.setValues);
         }
     }
 };
