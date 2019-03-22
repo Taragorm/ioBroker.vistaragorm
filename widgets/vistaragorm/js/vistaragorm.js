@@ -142,7 +142,7 @@ const taragorm_common = {
 
 // this code can be placed directly in vistaragorm.html
 vis.binds["vistaragorm_nbox"] = {
-    version: "0.0.1",
+    version: "0.0.2",
     
     showVersion: function () {
         if (vis.binds["vistaragorm_nbox"].version) {
@@ -215,7 +215,7 @@ vis.binds["vistaragorm_nbox"] = {
 
 
 vis.binds["vistaragorm_mvsp"] = {
-    version: "0.0.1",
+    version: "0.0.2",
     
     showVersion: function () {
         if (vis.binds["vistaragorm_mvsp"].version) {
