@@ -152,7 +152,7 @@ vis.binds["vistaragorm_nbox"] = {
     },
     
     setValue: function($div, data, newVal, ix) {
-        console.log("setvalue ix=", ix);
+        //console.log("nbox::setvalue ix=", ix, " v=", newVal);
 
         let fmt = data['format'+ix] || "%.1f";
     
@@ -167,64 +167,71 @@ vis.binds["vistaragorm_nbox"] = {
     },
     
     createWidget: function (widgetID, view, data, style) {
-        const N = 3;
-
-        var $div = $('#' + widgetID);
-        // if nothing found => wait
-        if (!$div.length) {
-            return setTimeout(function () {
-                vis.binds["vistaragorm_nbox"].createWidget(widgetID, view, data, style);
-            }, 100);
-        }
-
-        var text = '';
-        text += "<table class='vis_taragorm_nbox-table' style='background-color:#ff00ff'>";
-        text += "<tr><th>" + (data.titleText || '') + "</th></tr>";
-        for(let i=1; i<=N; ++i) {
-            if(data['mv'+i]) {
-                text += sprintf("<tr><td><span class='vis_taragorm_nbox-mv%d'></span></td></th>", i);
+        try {
+        
+            const N = 3;
+    
+            var $div = $('#' + widgetID);
+            // if nothing found => wait
+            if (!$div.length) {
+                return setTimeout(function () {
+                    vis.binds["vistaragorm_nbox"].createWidget(widgetID, view, data, style);
+                }, 100);
             }
-        }
-
-        text += "</table>";
-        
-        /*
-        text += 'OID: ' + data.oid + '</div><br>';
-        text += 'OID value: <span class="myset-value">' + vis.states[data.oid + '.val'] + '</span><br>';
-        text += 'Color: <span style="color: ' + data.myColor + '">' + data.myColor + '</span><br>';
-        text += 'extraAttr: ' + data.extraAttr + '<br>';
-        text += 'Browser instance: ' + vis.instance + '<br>';
-        text += 'htmlText: <textarea readonly style="width:100%">' + (data.htmlText || '') + '</textarea><br>';
-        */
-        $('#' + widgetID).html(text);
-
-        
-        
-        let self = this;
-        // subscribe on updates of value
-        let bound = [];
-
-        for(let i=1; i<=N; ++i) {
-            let mv = data["mv"+i];         
-            if (mv) {
-                let mvv = mv+".val";
-                let iv = vis.states[mvv];
-                bound.push(mvv);
-                this.setValue($div, data, iv, i );
-                var ix = i;
-                console.log("bound ", mvv, " intial state=", iv, " ix=", ix);
-                vis.states.bind(mvv, function (e, newVal, oldVal) {
-                    console.log(mv,ix,"=", newVal," from ", oldVal );                    
-                    self.setValue($div, data, newVal, ix);
-                });
+    
+            //console.log("Create nbox");
+            
+            var text = '';
+            text += "<table width='100%' height='100%' class='vis_taragorm_nbox-table' style='background-color:#ff00ff'>";
+            text += "<tr><th>" + (data.titleText || '') + "</th></tr>";
+            for(let i=1; i<=N; ++i) {
+                if(data['oid_mv'+i]) {
+                    text += sprintf("<tr><td><span class='vis_taragorm_nbox-mv%d'></span></td></th>", i);
+                }
             }
-        }
-
-        if(bound.length) {
-            $div.data('bound', bound);
-            $div.data('bindHandler', this.setValues);
-        }
-        
+    
+            text += "</table>";
+            
+            /*
+            text += 'OID: ' + data.oid + '</div><br>';
+            text += 'OID value: <span class="myset-value">' + vis.states[data.oid + '.val'] + '</span><br>';
+            text += 'Color: <span style="color: ' + data.myColor + '">' + data.myColor + '</span><br>';
+            text += 'extraAttr: ' + data.extraAttr + '<br>';
+            text += 'Browser instance: ' + vis.instance + '<br>';
+            text += 'htmlText: <textarea readonly style="width:100%">' + (data.htmlText || '') + '</textarea><br>';
+            */
+            $('#' + widgetID).html(text);
+    
+            
+            
+            let self = this;
+            // subscribe on updates of value
+            let bound = [];
+    
+            for(let i=1; i<=N; ++i) {
+                let mv = data["oid_mv"+i];         
+                if (mv) {
+                    let mvv = mv+".val";
+                    let iv = vis.states[mvv];
+                    let ix = i;
+                    bound.push(mvv);
+                    this.setValue($div, data, iv, i );
+                    //console.log("bound ", mvv, " intial state=", iv, " ix=", ix);
+                    vis.states.bind(mvv, function (e, newVal, oldVal) {
+                        //console.log(mv,ix,"=", newVal," from ", oldVal );                    
+                        self.setValue($div, data, newVal, ix);
+                    });
+                }
+            }
+    
+            if(bound.length) {
+                $div.data('bound', bound);
+                $div.data('bindHandler', this.setValues);
+            }
+            //console.log("Create nbox - done");
+        } catch(ex) {
+            console.error(ex);
+        }        
     }
 };
 
@@ -240,6 +247,8 @@ vis.binds["vistaragorm_mvsp"] = {
     },
     
     setValues: function($div, data, mv, sp) {
+        //console.log("setvalues mv=",mv," sp=",sp);
+        
         let fmt = data.format || "%.1f &deg;C";
     
         if(mv==null)
@@ -258,60 +267,71 @@ vis.binds["vistaragorm_mvsp"] = {
     },
     
     createWidget: function (widgetID, view, data, style) {
-        var $div = $('#' + widgetID);
-        // if nothing found => wait
-        if (!$div.length) {
-            return setTimeout(function () {
-                vis.binds["vistaragorm_mvsp"].createWidget(widgetID, view, data, style);
-            }, 100);
-        }
-
-        var text = '';
-        text += "<table class='vis_taragorm_nbox-table' style='background-color:#00ff00'>";
-        text += "<tr><th>" + (data.titleText || '') + "</th></tr>";
-        text += "<tr><td><span class='vis_taragorm_nbox-mv'></span></td></th>";
-        text += "<tr><td><span class='vis_taragorm_nbox-sp'></span></td></th>";
-        text += "</table>";
-        
-        /*
-        text += 'OID: ' + data.oid + '</div><br>';
-        text += 'OID value: <span class="myset-value">' + vis.states[data.oid + '.val'] + '</span><br>';
-        text += 'Color: <span style="color: ' + data.myColor + '">' + data.myColor + '</span><br>';
-        text += 'extraAttr: ' + data.extraAttr + '<br>';
-        text += 'Browser instance: ' + vis.instance + '<br>';
-        text += 'htmlText: <textarea readonly style="width:100%">' + (data.htmlText || '') + '</textarea><br>';
-        */
-        $('#' + widgetID).html(text);
-
-        
-        this.setValues(
-                        $div, 
-                        data, 
-                        vis.states[data.mv + ".val"], 
-                        vis.states[data.sp + ".val"] 
-                        );
-        
-        let self = this;
-        // subscribe on updates of values
-        let bound = [];
-        if (data.mv) {
-            let mvv = data.mv +".val";
-            bound.push( data.mvv );
-            vis.states.bind(mvv, function (e, newVal, oldVal) {
-                self.setValues($div, data, newVal, null );
-            });
-        }
-        if (data.sp) {
-            let spv= data.sp+".val";
-            bound.push( spv );
-            vis.states.bind(spv, function (e, newVal, oldVal) {
-                self.setValues($div, data, null, newVal );
-            });
-        }
-
-        if(bound.length) {
-            $div.data('bound', bound);
-            $div.data('bindHandler', this.setValues);
+        try {
+            var $div = $('#' + widgetID);
+            // if nothing found => wait
+            if (!$div.length) {
+                return setTimeout(function () {
+                    vis.binds["vistaragorm_mvsp"].createWidget(widgetID, view, data, style);
+                }, 100);
+            }
+            
+            //console.log("Create mvsp");
+    
+            var text = '';
+            text += "<table width='100%' height='100%' class='vis_taragorm_nbox-table' style='background-color:#00ff00'>";
+            text += "<tr><th>" + (data.titleText || '') + "</th></tr>";
+            text += "<tr><td><span class='vis_taragorm_nbox-mv'></span></td></th>";
+            text += "<tr><td><span class='vis_taragorm_nbox-sp'></span></td></th>";
+            text += "</table>";
+            
+            /*
+            text += 'OID: ' + data.oid + '</div><br>';
+            text += 'OID value: <span class="myset-value">' + vis.states[data.oid + '.val'] + '</span><br>';
+            text += 'Color: <span style="color: ' + data.myColor + '">' + data.myColor + '</span><br>';
+            text += 'extraAttr: ' + data.extraAttr + '<br>';
+            text += 'Browser instance: ' + vis.instance + '<br>';
+            text += 'htmlText: <textarea readonly style="width:100%">' + (data.htmlText || '') + '</textarea><br>';
+            */
+            $('#' + widgetID).html(text);
+    
+            
+            this.setValues(
+                            $div, 
+                            data, 
+                            vis.states[data.oid_mv + ".val"], 
+                            vis.states[data.oid_sp + ".val"] 
+                            );
+            
+            let self = this;
+            // subscribe on updates of values
+            let bound = [];
+            if (data.oid_mv) {
+                let mvv = data.oid_mv +".val";
+                bound.push( mvv );
+                //console.log("Bound ",mvv);
+                vis.states.bind(mvv, function (e, newVal, oldVal) {
+                    self.setValues($div, data, newVal, null );
+                });
+            }
+            
+            if (data.oid_sp) {
+                let spv= data.oid_sp+".val";
+                bound.push( spv );
+                //console.log("Bound ",spv);
+                vis.states.bind(spv, function (e, newVal, oldVal) {
+                    self.setValues($div, data, null, newVal );
+                });
+            }
+    
+            if(bound.length) {
+                $div.data('bound', bound);
+                $div.data('bindHandler', this.setValues);
+            }
+            //console.log("Create mvsp - done");
+            
+        } catch(ex) {
+            log.error(ex);
         }
     }
 };
