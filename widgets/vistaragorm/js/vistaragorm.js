@@ -16,133 +16,12 @@ $.get( "adapter/vistaragorm/words.js", function(script) {
 
 
 
-const taragorm_common = {
-
-    $error: [
-    	{ t:1e32, b: 0xff00ff }
-    ],
-
-    $indoor: [
-    	{ t:15, b: 0x6060ff },
-    	{ t:18, b: 0x00c000 },
-    	{ t:19, b: 0xb0b000 },
-    	{ t:22, b: 0xff0000 }
-    ],    
-    
-    $outdoor: [
-    	{ t:8, b: 0x6060ff },
-    	{ t:12, b: 0x00c000 },
-    	{ t:18, b: 0xb0b000 },
-    	{ t:22, b: 0xff0000 }
-    ],    
-
-    /**
-     Find index of first entry &gt; \a t 
-     Otherwise return last entry
-     */
-    findindex: function(vect, t) {
-    	for(var i=0; i<vect.length; ++i) {
-    		let vv = vect[i];
-	    	if( vv.t >= t )
-    			return i;
-    	}    
-    	return vect.length-1;
-    },
-    
-    lookup: function(vect, t) {
-    	return  sprintf("#%06x", vect[ this.findindex(vect,t) ].b);
-    },
-
-    intercolour : function(cl, ch, m, f) {
-    	var cd = (ch&m)-(cl&m);
-    	var cch = (f*cd) & m;
-    	return (cl + cch) & m;
-    },
-    
-    
-    makeColour: function(n) {
-    	return sprintf("#%06x", n);
-    },
-    
-    interpol: function(vect, t) {
-    	if(t <= vect[0].t)
-    		return this.makeColour(vect[0].b);
-    		
-    	var vv = vect[vect.length-1];
-    	if( t >= vv.t )
-		return this.makeColour(vv.b);
-    		
-    	// otherwise, inside range
-    	var ih = this.findindex(vect,t);
-    	var vh = vect[ih];
-    	if(vh.t == t)
-    		return this.makeColour(vh.b); // exact
-    		
-    	// must be somewhere between ih and ih-1
-    	var vl = vect[ih-1];
-    	var f = (t - vl.t) / (vh.t - vl.t); // amount of diff
-    	
-    	// interpolate...
-    	return this.makeColour( 
-    				this.intercolour(  vl.b, vh.b, 0x0000ff, f)
-    				+ this.intercolour(vl.b, vh.b, 0x00ff00, f)
-    				+ this.intercolour(vl.b, vh.b, 0xff0000, f)
-    				);
-    },
-
-    getBackground : function(t, vect, interp) {
-        vect = vect || this.$indoor;
-        
-        if(interp) {
-            return this.interpol(vect,t);
-        } else {
-            return this.lookup(vect,t);
-        }
-    },
-
-
-    getColourVector: function(vname) {
-        if(!vname)
-            return this.$indoor;
-
-        if(vname.startsWith("$")) {
-            let v = this[vname]; 
-            if(v)
-                return v;
-
-            console.error("No predef colours " + vname);
-        }
-
-        // try JSON
-        try {
-            return JSON.parse(vname);
-        }
-        catch(ex)
-        {
-            console.error("Can't parse as JSON:", vname);
-            return this.$error;
-        }
-    },
-
-    format: function(fmt, v) {
-        if(v==null || v==undefined)
-            return "?";
-        
-        try {
-            return sprintf(fmt,v);
-        } catch(ex) {
-            console.error("Bad format:"+ex);
-            return "?!";
-        }
-
-    }
-};
 
 
 
 // this code can be placed directly in vistaragorm.html
 vis.binds["vistaragorm_nbox"] = {
-    version: "0.0.2",
+    version: "0.0.3",
     
     showVersion: function () {
         if (vis.binds["vistaragorm_nbox"].version) {
@@ -161,8 +40,8 @@ vis.binds["vistaragorm_nbox"] = {
         if(ix==1)
         {
             var vect = taragorm_common.getColourVector(data.colours);
-            var bg = taragorm_common.getBackground(newVal, vect, data.interpolate);
-            $div.find('.vis_taragorm_nbox-table').css('background-color', bg );    
+            var colours = taragorm_common.getColoursCSS(newVal, vect, data.interpolate);
+            $div.find('.vis_taragorm_nbox-table').css( colours );    
         }
     },
     
@@ -192,16 +71,10 @@ vis.binds["vistaragorm_nbox"] = {
     
             text += "</table>";
             
-            /*
-            text += 'OID: ' + data.oid + '</div><br>';
-            text += 'OID value: <span class="myset-value">' + vis.states[data.oid + '.val'] + '</span><br>';
-            text += 'Color: <span style="color: ' + data.myColor + '">' + data.myColor + '</span><br>';
-            text += 'extraAttr: ' + data.extraAttr + '<br>';
-            text += 'Browser instance: ' + vis.instance + '<br>';
-            text += 'htmlText: <textarea readonly style="width:100%">' + (data.htmlText || '') + '</textarea><br>';
-            */
             $('#' + widgetID).html(text);
     
+            if(data.onClick) 
+             $div.find('.vis_taragorm_nbox-table').attr('onClick', data.onClick);
             
             
             let self = this;
@@ -237,7 +110,7 @@ vis.binds["vistaragorm_nbox"] = {
 
 
 vis.binds["vistaragorm_mvsp"] = {
-    version: "0.0.2",
+    version: "0.0.3",
     
     showVersion: function () {
         if (vis.binds["vistaragorm_mvsp"].version) {
@@ -261,9 +134,9 @@ vis.binds["vistaragorm_mvsp"] = {
         $div.find('.vis_taragorm_nbox-sp').html( taragorm_common.format(fmt, sp) );
         
         var vect = taragorm_common.getColourVector(data.colours);
-        var mvbg = taragorm_common.getBackground(mv, vect, data.interpolate);
+        var mvcols = taragorm_common.getColours(mv, vect, data.interpolate);
         var spbg = taragorm_common.getBackground(sp, vect, data.interpolate);
-        $div.find('.vis_taragorm_nbox-table').css('background', 'radial-gradient('+ mvbg+', '+ spbg + ')' );    
+        $div.find('.vis_taragorm_nbox-table').css({ "background": "radial-gradient("+ mvcols.b+", "+ spbg + ")", "foreground-color": mvcols.f } );    
     },
     
     createWidget: function (widgetID, view, data, style) {
@@ -285,17 +158,12 @@ vis.binds["vistaragorm_mvsp"] = {
             text += "<tr><td><span class='vis_taragorm_nbox-sp'></span></td></th>";
             text += "</table>";
             
-            /*
-            text += 'OID: ' + data.oid + '</div><br>';
-            text += 'OID value: <span class="myset-value">' + vis.states[data.oid + '.val'] + '</span><br>';
-            text += 'Color: <span style="color: ' + data.myColor + '">' + data.myColor + '</span><br>';
-            text += 'extraAttr: ' + data.extraAttr + '<br>';
-            text += 'Browser instance: ' + vis.instance + '<br>';
-            text += 'htmlText: <textarea readonly style="width:100%">' + (data.htmlText || '') + '</textarea><br>';
-            */
             $('#' + widgetID).html(text);
     
-            
+            if(data.onClick) 
+             $div.find('.vis_taragorm_nbox-table').attr('onClick', data.onClick);
+             
+             
             this.setValues(
                             $div, 
                             data, 

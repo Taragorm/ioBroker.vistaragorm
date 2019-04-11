@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="widgets/vistaragorm/css/style.css" />
 <!-- here you can include so many js-files as you want -->
 <script type="text/javascript" src="widgets/vistaragorm/js/sprintf.min.js"></script>
+<script type="text/javascript" src="widgets/vistaragorm/js/taracommon.js"></script>
 <script type="text/javascript" src="widgets/vistaragorm/js/vistaragorm.js"></script>
 
 <!-- the full description of format in data-vis-attrs can be found here:
@@ -106,6 +107,7 @@
         class="vis-tpl"
         data-vis-prev='<div class="vis-taragorm-class"><table class="vis_taragorm_nbox-table" style="background-color:#00ff00"><tr><th>TITLE</th></tr><tr><td> 23.4C </td></tr><tr><td> 56.7C </td></tr><tr><td> 23.4C </td></tr></div>'
         data-vis-attrs="oid_mv1/id;format1/text;oid_mv2/id;format2/text;oid_mv3/id;format3/text;titleText/text;interpolate/checkbox;colours/text[$inside]"
+	data-vis-attrs0="onClick/text"
         data-vis-set="vistaragorm"
         data-vis-type="val"
         data-vis-name="1-3 values with bg">
@@ -118,8 +120,9 @@
 <script id="tplVistaragormHelper_mvsp"
         type="text/ejs"
         class="vis-tpl"
-        data-vis-prev='<div class="vis-taragorm-class"> <table style="background: radial-gradient(#ff0000, #6060ff)"><tr><th>TITLE</th></tr><tr><td> 25.4C </td></tr><tr><td> 15.0C </td></tr></div>'
+        data-vis-prev='<div class="vis-taragorm-class"> <table style="background: radial-gradient(#ff0000, #6060ff)"><tr><th>TITLE</th></tr><tr><td> 25.4C </td></tr><tr><td> 15.0C </td></tr></table></div>'
         data-vis-attrs="oid_mv/id;oid_sp/id;format/text;titleText/text;interpolate/checkbox;colours/text[$inside]"
+	data-vis-attrs0="onClick/text"
         data-vis-set="vistaragorm"
         data-vis-type="val"
         data-vis-name="MV+SP">
