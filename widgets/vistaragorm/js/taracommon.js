@@ -6,16 +6,16 @@ var taragorm_common = taragorm_common || {
     ],
 
     $indoor: [
-    	{ t:15, b: 0x6060ff, f:0x0000 },
-    	{ t:18, b: 0x00c000, f:0x0000 },
-    	{ t:19, b: 0xb0b000, f:0x0000 },
-    	{ t:22, b: 0xff0000, f:0x0000 }
+    	{ t:15, b: 0x2222ff, f:0x0000 },
+    	{ t:18, b: 0x0bb000, f:0x0000 },
+    	{ t:21, b: 0xdddd00, f:0x0000 },
+    	{ t:24, b: 0xff0000, f:0x0000 }
     ],    
     
     $outdoor: [
-    	{ t:8,  b: 0x6060ff, f:0x0000 },
-    	{ t:12, b: 0x00c000, f:0x0000 },
-    	{ t:18, b: 0xb0b000, f:0x0000 },
+    	{ t:8,  b: 0x2222ff, f:0x0000 },
+    	{ t:12, b: 0x00bb00, f:0x0000 },
+    	{ t:18, b: 0xdddd00, f:0x0000 },
     	{ t:22, b: 0xff0000, f:0x0000 }
     ],    
 
@@ -116,6 +116,9 @@ var taragorm_common = taragorm_common || {
     },
 
     getColourVector: function(vname) {
+    	if(vname)
+    		vname = vname.trim();
+    		
         if(!vname)
             return this.$indoor;
 
