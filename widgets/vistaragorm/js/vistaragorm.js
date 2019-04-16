@@ -34,7 +34,7 @@ vis.binds["vistaragorm_nbox"] = {
             const N = 3;
             var fmts = []
             for(let i=0; i<N; ++i)
-                fmts.push(data['format'+i] || "%.1f");
+                fmts.push(data['format'+(i+1)] || "%.1f");
 
             var vect = taragorm_common.getColourVector(data.colours);                
 
@@ -77,8 +77,8 @@ vis.binds["vistaragorm_nbox"] = {
             // subscribe on updates of value
             let bound = [];
     
-            for(let i=1; i<=N; ++i) {
-                let mv = data["oid_mv"+i];         
+            for(let i=0; i<N; ++i) {
+                let mv = data["oid_mv"+(i+1)];         
                 if (mv) {
                     let mvv = mv+".val";
                     let iv = vis.states[mvv];
@@ -86,7 +86,7 @@ vis.binds["vistaragorm_nbox"] = {
                     setValue( iv, i );
                     //console.log("bound ", mvv, " intial state=", iv, " ix=", ix);
                     vis.states.bind(mvv, function (e, newVal, oldVal) {
-                        //console.log(mv,ix,"=", newVal," from ", oldVal );                    
+                        //console.log(mv,i,"=", newVal," from ", oldVal );                    
                         setValue(newVal, i);
                     });
                 }
@@ -105,7 +105,7 @@ vis.binds["vistaragorm_nbox"] = {
         // local functions
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function setValue (newVal, ix) {
-            //console.log("nbox::setvalue ix=", ix, " v=", newVal);
+            console.log("nbox::setvalue ix=", ix, " v=", newVal);
             let $mv = $mvs[ix];
             if(!$mv)
                 return;
