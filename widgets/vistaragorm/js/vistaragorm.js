@@ -111,7 +111,7 @@ vis.binds["vistaragorm_nbox"] = {
                 return;
 
             $mv.html( taragorm_common.format(fmts[ix], newVal) );    
-            if(ix==1)
+            if(ix==0)
             {
                 var colours = taragorm_common.getColoursCSS(newVal, vect, data.interpolate);
                 $table.css( colours );    
