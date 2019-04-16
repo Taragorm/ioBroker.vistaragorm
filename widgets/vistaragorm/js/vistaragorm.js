@@ -32,11 +32,11 @@ vis.binds["vistaragorm_nbox"] = {
         try {
         
             const N = 3;
-            const fmts = []
+            var fmts = []
             for(let i=0; i<N; ++i)
-                fmts.push(data['format'+ix] || "%.1f");
+                fmts.push(data['format'+i] || "%.1f");
 
-            const vect = taragorm_common.getColourVector(data.colours);                
+            var vect = taragorm_common.getColourVector(data.colours);                
 
             var $div = $('#' + widgetID);
             // if nothing found => wait
@@ -46,18 +46,14 @@ vis.binds["vistaragorm_nbox"] = {
                 }, 100);
             }
     
-            //console.log("Create nbox");
-            
-            const $mvs = [];
             var text = [];
 
             text.push(`
 <table width='100%' height='100%' class='vis_taragorm_nbox-table' style='background-color:#ff00ff'>
-<tr><th>" + ${data.titleText || ''}</th></tr>`
+<tr><th>${data.titleText || ''}</th></tr>`
             );
 
             for(let i=1; i<=N; ++i) {
-                $mvs.push($div.find('.vis_taragorm_nbox-mv' + i ));
                 if(data['oid_mv'+i]) {
                     text.push(`<tr><td><span class='vis_taragorm_nbox-mv${i}'></span></td></th>`);
                 }
@@ -66,11 +62,16 @@ vis.binds["vistaragorm_nbox"] = {
             text.push("</table>");
             
             $('#' + widgetID).html(text.join(""));
-    
+
+            var $mvs = [];
+            for(let i=1; i<=N; ++i) {
+                $mvs.push($div.find('.vis_taragorm_nbox-mv' + i ));
+            }
+
             if(data.onClick) 
                 $div.find('.vis_taragorm_nbox-table').attr('onClick', data.onClick);
             
-            const $table = $div.find('.vis_taragorm_nbox-table');
+            var $table = $div.find('.vis_taragorm_nbox-table');
             
             let self = this;
             // subscribe on updates of value
@@ -81,13 +82,12 @@ vis.binds["vistaragorm_nbox"] = {
                 if (mv) {
                     let mvv = mv+".val";
                     let iv = vis.states[mvv];
-                    let ix = i;
                     bound.push(mvv);
                     setValue( iv, i );
                     //console.log("bound ", mvv, " intial state=", iv, " ix=", ix);
                     vis.states.bind(mvv, function (e, newVal, oldVal) {
                         //console.log(mv,ix,"=", newVal," from ", oldVal );                    
-                        setValue(newVal, ix);
+                        setValue(newVal, i);
                     });
                 }
             }
@@ -106,8 +106,11 @@ vis.binds["vistaragorm_nbox"] = {
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function setValue (newVal, ix) {
             //console.log("nbox::setvalue ix=", ix, " v=", newVal);
+            let $mv = $mvs[ix];
+            if(!$mv)
+                return;
 
-            $mvs[ix].html( taragorm_common.format(fmts[ix], newVal) );    
+            $mv.html( taragorm_common.format(fmts[ix], newVal) );    
             if(ix==1)
             {
                 var colours = taragorm_common.getColoursCSS(newVal, vect, data.interpolate);
@@ -136,11 +139,11 @@ vis.binds["vistaragorm_mvsp"] = {
     //--------------------------------------------------------------------------------------
     createWidget: function (widgetID, view, data, style) {
         try {
-            let fmt = data.format || "%.1f &deg;C";
+            var fmt = data.format || "%.1f &deg;C";
             var vect = taragorm_common.getColourVector(data.colours);
             var $div = $('#' + widgetID);
-            const oid_mv = data.oid_mv +".val"
-            const oid_sp = data.oid_sp +".val"
+            var oid_mv = data.oid_mv +".val"
+            var oid_sp = data.oid_sp +".val"
             
             // if nothing found => wait
             if (!$div.length) {
@@ -163,11 +166,11 @@ vis.binds["vistaragorm_mvsp"] = {
             if(data.onClick) 
                 $div.find('.vis_taragorm_nbox-table').attr('onClick', data.onClick);
 
-            const $table = $div.find('.vis_taragorm_nbox-table');
-            const $mv = $div.find('.vis_taragorm_nbox-mv');
-            const $sp = $div.find('.vis_taragorm_nbox-sp'):
+            var $table = $div.find('.vis_taragorm_nbox-table');
+            var $mv = $div.find('.vis_taragorm_nbox-mv');
+            var $sp = $div.find('.vis_taragorm_nbox-sp');
              
-            this.setValues(null,null);
+            setValues(null,null);
             
             // subscribe on updates of values
             let bound = [];
@@ -193,7 +196,7 @@ vis.binds["vistaragorm_mvsp"] = {
             }
             
         } catch(ex) {
-            log.error(ex);
+            console.error(ex);
         }
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // local functions
