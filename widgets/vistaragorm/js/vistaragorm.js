@@ -105,7 +105,7 @@ vis.binds["vistaragorm_nbox"] = {
         // local functions
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function setValue (newVal, ix) {
-            console.log("nbox::setvalue ix=", ix, " v=", newVal);
+            //console.log("nbox::setvalue ix=", ix, " v=", newVal);
             let $mv = $mvs[ix];
             if(!$mv)
                 return;
