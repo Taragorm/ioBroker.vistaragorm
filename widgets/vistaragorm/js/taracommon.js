@@ -1,23 +1,55 @@
+/**
+ * Common colour handling
+ */
 
-var taragorm_common = taragorm_common || {
+
+var taragorm_common = {
+//var taragorm_common = taragorm_common || {
+        version : 1,
+
+    NANColor : { b: "gray", f:"black"},
 
     $error: [
     	{ t:1e32, b: 0xff00ff }
     ],
 
+    /**
+     * Indoor temperature standard vector
+     */
     $indoor: [
-    	{ t:15, b: 0x2222ff, f:0x0000 },
+    	{ t:15, b: 0x1E90FF, f:0x0000 },
     	{ t:18, b: 0x0bb000, f:0x0000 },
     	{ t:21, b: 0xdddd00, f:0x0000 },
     	{ t:24, b: 0xff0000, f:0x0000 }
     ],    
     
+    /**
+     * Outdoor temperature standard vector
+     */
     $outdoor: [
-    	{ t:8,  b: 0x2222ff, f:0x0000 },
+    	{ t:8,  b: 0x1E90FF, f:0x0000 },
     	{ t:12, b: 0x00bb00, f:0x0000 },
     	{ t:18, b: 0xdddd00, f:0x0000 },
     	{ t:22, b: 0xff0000, f:0x0000 }
     ],    
+
+    /**
+     * Laser coolant temperature standard vector
+     */
+    $laser: [
+    	{ t:12, b: 0x1E90FF, f:0x0000 },
+    	{ t:24, b: 0x0bb000, f:0x0000 },
+    	{ t:26, b: 0xdddd00, f:0x0000 },
+    	{ t:30, b: 0xff0000, f:0x0000 }
+    ],    
+    
+    /**
+     * Return highest version object of this and the other one.
+     * @param {taracommon} other 
+     */
+    resolve: function(other) {
+        return (!other || this.version > other.version) ? this : other;
+    },
 
     /**
      Find index of first entry &gt; \a t 
@@ -76,6 +108,8 @@ var taragorm_common = taragorm_common || {
     },
 
     getBackground : function(t, vect, interp) {
+        if( isNaN(t)) return this.NANColor.b;
+
         vect = vect || this.$indoor;
         
         if(interp) {
@@ -86,6 +120,8 @@ var taragorm_common = taragorm_common || {
     },
     
     getForeground : function(t, vect, interp) {
+        if( isNaN(t)) return this.NANColor.f;
+
         vect = vect || this.$indoor;
         
         if(interp) {
@@ -96,6 +132,8 @@ var taragorm_common = taragorm_common || {
     },
     
     getColours : function(t, vect, interp) {
+        if( isNaN(t)) return this.NANColor;
+
         vect = vect || this.$indoor;
         
         if(interp) {
@@ -106,13 +144,8 @@ var taragorm_common = taragorm_common || {
     },
     
     getColoursCSS : function(t, vect, interp) {
-        vect = vect || this.$indoor;
-        
-        if(interp) {
-            return { "foreground-color": this.interpol(vect,t,'f'), "background-color": this.interpol(vect,t,'b') };
-        } else {
-            return { "foreground-color": this.lookup(vect,t,'f'), "background-color": this.lookup(vect,t,'b') };
-        }
+        let c = this.getColours(t,vect, interp);
+        return { "foreground-color": c.f, "background-color": c.b };
     },
 
     getColourVector: function(vname) {
@@ -153,4 +186,4 @@ var taragorm_common = taragorm_common || {
         }
 
     }
-};
+}.resolve(taragorm_common);
