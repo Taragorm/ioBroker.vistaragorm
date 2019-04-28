@@ -192,7 +192,7 @@ vis.binds["vistaragorm_mvsp"] = {
     
             if(bound.length) {
                 $div.data('bound', bound);
-                $div.data('bindHandler', this.setValues);
+                $div.data('bindHandler', setValues);
             }
             
         } catch(ex) {
@@ -223,10 +223,78 @@ vis.binds["vistaragorm_mvsp"] = {
     //--------------------------------------------------------------------------------------
 };
 
+vis.binds["vistaragorm_htmltoggle"] = {
+    version: "0.0.1",
+    
+    //--------------------------------------------------------------------------------------
+    showVersion: function () {
+        if (vis.binds["vistaragorm_htmltoggle"].version) {
+            console.log('Version vistaragorm_htmltoggle: ' + vis.binds["vistaragorm_htmltoggle"].version);
+            vis.binds["vistaragorm_htmltoggle"].version = null;
+        }
+    },
+    
+    //--------------------------------------------------------------------------------------
+    createWidget: function (widgetID, view, data, style) {
+        try {
+            var $div = $('#' + widgetID);
+            var html_true = data.htmlTrue;
+            var html_false = data.htmlFalse;
 
+            // if nothing found => wait
+            if (!$div.length) {
+                return setTimeout(function () {
+                    vis.binds["vistaragorm_htmltoggle"].createWidget(widgetID, view, data, style);
+                }, 100);
+            }
+            
+            //console.log("Create mvsp");
+    
+            var text = `<button type="button" class="vis-tara-button">Button</button>`;
+            
+            $('#' + widgetID).html(text);
+
+            var $button = $div.find(".vis-tara-button").button();
+            $button.click(_click);
+
+
+
+            // subscribe on updates of values
+            let bound = [];
+            if (data.oid) {
+                var oidv = data.oid + ".val";
+                bound.push(oidv );
+                vis.states.bind(oidv, function (e, newVal, oldVal) {
+                    _setValue(newVal);
+                });
+            }
+            
+           if(bound.length) {
+                $div.data('bound', bound);
+                $div.data('bindHandler', _setValue);
+            }
+
+            _setValue(vis.states[oidv]);
+
+        } catch(ex) {
+            console.error(ex);
+        }
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function _setValue(v) {
+            $button.html( v ? html_true : html_false);
+        }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function _click() {
+            vis.setValue(oidv, !vis.states[oidv]);
+        }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    }
+}
 
 
 vis.binds["vistaragorm_nbox"].showVersion();
 vis.binds["vistaragorm_mvsp"].showVersion();
+vis.binds["vistaragorm_htmltoggle"].showVersion();
 
 
