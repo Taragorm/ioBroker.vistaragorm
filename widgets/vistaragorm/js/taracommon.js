@@ -17,10 +17,17 @@ var taragorm_common = {
      * Indoor temperature standard vector
      */
     $indoor: [
-    	{ t:15, b: 0x1E90FF, f:0x0000 },
-    	{ t:18, b: 0x00e000, f:0x0000 },
+    	{ t:13, b: 0x1E90FF, f:0x0000 },
+    	{ t:17, b: 0x00e000, f:0x0000 },
     	{ t:21, b: 0xdddd00, f:0x0000 },
-    	{ t:24, b: 0xff0000, f:0x0000 }
+    	{ t:25, b: 0xff0000, f:0x0000 }
+    ],    
+    
+    $outbuilding: [
+    	{ t:10, b: 0x1E90FF, f:0x0000 },
+    	{ t:14, b: 0x00e000, f:0x0000 },
+    	{ t:18, b: 0xdddd00, f:0x0000 },
+    	{ t:26, b: 0xff0000, f:0x0000 }
     ],    
     
     /**
