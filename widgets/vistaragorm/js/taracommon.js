@@ -247,7 +247,7 @@ var taragorm_common = {
         }
         catch(ex)
         {
-            console.error("Can't parse as JSON:", vname);
+            console.error("Can't parse as JSON:", vname,"\n type=", typeof vname);
             return this.$error;
         }
     },

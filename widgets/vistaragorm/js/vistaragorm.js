@@ -422,7 +422,7 @@ vis.binds["vistaragorm_hilo"] = {
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function _setValue(v) {
-            v = Number(b);
+            v = Number(v);
             console.log(`${v}, ${lim_l}, ${lim_ll}, ${lim_h}, ${lim_hh}`);
             var t = html_n || "OK";
             if(lim_l != undefined && v <= lim_l)
