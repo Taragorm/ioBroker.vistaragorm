@@ -15,7 +15,6 @@ $.get( "adapter/vistaragorm/words.js", function(script) {
 });
 
 
-// this code can be placed directly in vistaragorm.html
 vis.binds["vistaragorm_nbox"] = {
     version: "0.0.4",
     
@@ -250,7 +249,7 @@ vis.binds["vistaragorm_htmltoggle"] = {
             
             //console.log("Create mvsp");
     
-            var text = `<button type="button" class="vis-tara-button">Button</button>`;
+            var text = `<button type="button" class="vis-tara-button">&hearts;</button>`;
             
             $('#' + widgetID).html(text);
 
@@ -292,9 +291,166 @@ vis.binds["vistaragorm_htmltoggle"] = {
     }
 }
 
+vis.binds["vistaragorm_bool"] = {
+    version: "0.0.1",
+    
+    //--------------------------------------------------------------------------------------
+    showVersion: function () {
+        if (vis.binds["vistaragorm_bool"].version) {
+            console.log('Version vistaragorm_bool: ' + vis.binds["vistaragorm_bool"].version);
+            vis.binds["vistaragorm_bool"].version = null;
+        }
+    },
+    
+    //--------------------------------------------------------------------------------------
+    createWidget: function (widgetID, view, data, style) {
+        try {
+            var $div = $('#' + widgetID);
+            var html_true = data.htmlTrue;
+            var html_false = data.htmlFalse;
+
+            // if nothing found => wait
+            if (!$div.length) {
+                return setTimeout(function () {
+                    vis.binds["vistaragorm_bool"].createWidget(widgetID, view, data, style);
+                }, 100);
+            }
+            
+            //console.log("Create mvsp");
+    
+            var text = `<span class="vis-tara-span">&hearts;</span>`;
+            
+            $('#' + widgetID).html(text);
+
+            var $span = $div.find(".vis-tara-span");
+
+
+
+            // subscribe on updates of values
+            let bound = [];
+            if (data.oid) {
+                var oidv = data.oid + ".val";
+                bound.push(oidv );
+                vis.states.bind(oidv, function (e, newVal, oldVal) {
+                    _setValue(newVal);
+                });
+            }
+            
+           if(bound.length) {
+                $div.data('bound', bound);
+                $div.data('bindHandler', _setValue);
+            }
+
+            _setValue(vis.states[oidv]);
+
+        } catch(ex) {
+            console.error(ex);
+        }
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function _setValue(v) {
+            //console.log(`${v}`);
+            $span.html( Boolean(v) ? html_true : html_false);
+        }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    }
+}
+
+vis.binds["vistaragorm_hilo"] = {
+    version: "0.0.1",
+    
+    //--------------------------------------------------------------------------------------
+    showVersion: function () {
+        if (vis.binds["vistaragorm_hilo"].version) {
+            console.log('Version vistaragorm_hilo: ' + vis.binds["vistaragorm_hilo"].version);
+            vis.binds["vistaragorm_hilo"].version = null;
+        }
+    },
+    
+    //--------------------------------------------------------------------------------------
+    createWidget: function (widgetID, view, data, style) {
+        try {
+            var $div = $('#' + widgetID);
+            var html_ll = data.htmlLoLo;
+            var html_l = data.htmlLo;
+            var html_n = data.htmlNormal;
+            var html_h = data.htmlHi;
+            var html_hh = data.htmlHiHi;
+            var lim_ll = data.lolo;
+            var lim_l = data.lo;
+            var lim_h = data.hi;
+            var lim_hh = data.hihi;
+            
+
+            // if nothing found => wait
+            if (!$div.length) {
+                return setTimeout(function () {
+                    vis.binds["vistaragorm_hilo"].createWidget(widgetID, view, data, style);
+                }, 100);
+            }
+            
+            //console.log("Create mvsp");
+    
+            var text = `<span class="vis-tara-span">&hearts;</span>`;
+            
+            $('#' + widgetID).html(text);
+
+            var $span = $div.find(".vis-tara-span");
+
+
+
+            // subscribe on updates of values
+            let bound = [];
+            if (data.oid) {
+                var oidv = data.oid + ".val";
+                bound.push(oidv );
+                vis.states.bind(oidv, function (e, newVal, oldVal) {
+                    _setValue(newVal);
+                });
+            }
+            
+           if(bound.length) {
+                $div.data('bound', bound);
+                $div.data('bindHandler', _setValue);
+            }
+
+            _setValue(vis.states[oidv]);
+
+        } catch(ex) {
+            console.error(ex);
+        }
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function _setValue(v) {
+
+//            console.log(`${v}, ${lim_l}, ${lim_ll}, ${lim_h}, ${lim_hh}`);
+            var t = html_n || "??";
+            if(lim_l != undefined && v <= lim_l)
+            {
+                if(lim_ll != undefined && v <= lim_ll)
+                    t = html_ll;
+                else 
+                    t = html_l;
+            }
+            else if(lim_h != undefined && v >= lim_h)
+            {
+                if(lim_hh != undefined && v >= lim_hh)
+                    t = html_hh;
+                else
+                    t = html_h;
+            }
+
+            $span.html( sprintf(t,v) );
+        }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    }
+}
+
 
 vis.binds["vistaragorm_nbox"].showVersion();
 vis.binds["vistaragorm_mvsp"].showVersion();
 vis.binds["vistaragorm_htmltoggle"].showVersion();
+vis.binds["vistaragorm_bool"].showVersion();
+vis.binds["vistaragorm_hilo"].showVersion();
 
 

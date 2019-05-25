@@ -56,4 +56,31 @@
 </script>
 
 
+<script id="tplVistaragormHelper_bool"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<input type="button>Toggle</button>"'
+        data-vis-attrs="oid/id;htmlFalse/text;htmlTrue/text"
+        data-vis-set="vistaragorm"
+        data-vis-type="val"
+        data-vis-name="HTML Boolean">
+    <div class="vis-widget <%== this.data.attr('class') %>" style="overflow:visible; width: 20px; height: 20px" id="<%= this.data.attr('wid') %>"><%
+        vis.binds.vistaragorm_bool.createWidget(this.data.wid, this.view, this.data, this.style);
+    %></div>
+</script>
+
+<script id="tplVistaragormHelper_hilo"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<input type="button>Toggle</button>"'
+        data-vis-attrs="oid/id;lolo/number;htmlLoLo/text;lo/number;htmlLo/text;htmlNormal/text;hi/number;htmlHi/text;hihi/number;htmlHiHi"
+        data-vis-set="vistaragorm"
+        data-vis-type="val"
+        data-vis-name="HTML Hi/Lo indicator">
+    <div class="vis-widget <%== this.data.attr('class') %>" style="overflow:visible; width: 20px; height: 20px" id="<%= this.data.attr('wid') %>"><%
+        vis.binds.vistaragorm_hilo.createWidget(this.data.wid, this.view, this.data, this.style);
+    %></div>
+</script>
+
+
 
