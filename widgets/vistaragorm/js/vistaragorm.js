@@ -125,7 +125,7 @@ vis.binds["vistaragorm_nbox"] = {
 
 
 vis.binds["vistaragorm_mvsp"] = {
-    version: "0.0.3",
+    version: "0.0.4",
     
     //--------------------------------------------------------------------------------------
     showVersion: function () {
@@ -143,6 +143,7 @@ vis.binds["vistaragorm_mvsp"] = {
             var $div = $('#' + widgetID);
             var oid_mv = data.oid_mv +".val"
             var oid_sp = data.oid_sp +".val"
+            var offSp = data.offSp;
             
             // if nothing found => wait
             if (!$div.length) {
@@ -212,9 +213,16 @@ vis.binds["vistaragorm_mvsp"] = {
             $mv.html( taragorm_common.format(fmt, mv) );
             $sp.html( taragorm_common.format(fmt, sp) );
             
-            var mvcols = taragorm_common.getColours(mv, vect, data.interpolate);
-            var spbg = taragorm_common.getBackground(sp, vect, data.interpolate);
-            $table.css({ "background": "radial-gradient("+ mvcols.b+", "+ spbg + ")", "foreground-color": mvcols.f } );    
+            if(offSp != undefined && sp <= offSp) {
+                // just show single colour
+                let colours = taragorm_common.getColoursCSS(mv, vect, data.interpolate);
+                $table.css( colours );    
+            } else {
+                // two colour mode
+                let mvcols = taragorm_common.getColours(mv, vect, data.interpolate);
+                let spbg = taragorm_common.getBackground(sp, vect, data.interpolate);
+                $table.css({ "background": "radial-gradient("+ mvcols.b+", "+ spbg + ")", "foreground-color": mvcols.f } );    
+            }
         }
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

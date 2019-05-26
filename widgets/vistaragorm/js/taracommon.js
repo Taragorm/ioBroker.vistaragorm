@@ -5,7 +5,7 @@
 
 var taragorm_common = {
 //var taragorm_common = taragorm_common || {
-        version : 4,
+        version : 7,
 
     NANColor : { b: "gray", f:"black"},
 
@@ -87,10 +87,8 @@ var taragorm_common = {
             "yellow":0xffff00,"yellowgreen":0x9acd32
         };
     
-        if (typeof colours[colour.toLowerCase()] != 'undefined')
-            return colours[colour.toLowerCase()];
+        return colours[colour.toLowerCase()];
     
-        return undefined;
     },
 
     /**
@@ -193,26 +191,34 @@ var taragorm_common = {
     //------------------------------------------------------------------------------
     decodeColor : function(ec, def)
     {
-        if(ec==undefined || ec==null || ec==="")
+        console.log("decoding ", ec);
+        var c;
+        if(ec==undefined || ec==null || ec==="") {
             return def;
+        }
 
         if(typeof ec === "int")
             return ec;
 
-                
+        ec = String(ec);
+
         if(ec.charAt(0)=="#") {
                     // hex enc
-            return parseInt(ec.substring(1), 16);
+            c = parseInt(ec.substring(1), 16);
+            if(!isNaN(c))
+                return c;
         } 
 
-        try{
-            return parseInt(ec);
+        try {
+            c = parseInt(ec);
+            if(!isNaN(c))
+                return c;
         }
         catch(ex) {
 
         }
         
-        var c = this.colourNameToRGBHex(ec);
+        c = this.colourNameToRGBHex(ec);
         if(c==undefined) 
             return def;
 
@@ -236,20 +242,43 @@ var taragorm_common = {
             console.error("No predef colours " + vname);
         }
 
-        // try JSON
+        // vector form
+        let v = []
+        let lines = vname.split("\n");
+        for (const l of lines) {
+            let frags = l.split(/\s+/);
+            let t = parseFloat(frags[0]);
+            if(isNaN(t))
+                continue;
+            let b = this.decodeColor(frags[1], 0x808080);
+            let f = this.decodeColor(frags[2], 0);
+            v.push({"t":t, "b":b, "f":f});
+        }
+
+        console.log(JSON.stringify(v));
+        if(v.length==0) 
+            return this.$error;
+
+        return v;
+
+        // try JSON - seems to be mangled 
+/*        
         try {
             let j = JSON.parse(vname);
             for (const swp of j) {
-                j.f = this.decodeColor(j.f, 0);
-                j.b = this.decodeColor(j.b, 0x808080);
+                swp.f = this.decodeColor(swp.f, 0);
+                swp.b = this.decodeColor(swp.b, 0x808080);
             }
+            console.log(JSON.stringify(j));
             return j
         }
         catch(ex)
         {
-            console.error("Can't parse as JSON:", vname,"\n type=", typeof vname);
+            console.error("Can't parse as JSON:", vname,"\n type=", typeof vname, "\n ex=", ex);
             return this.$error;
         }
+        return this.$error;
+*/
     },
 
     format: function(fmt, v) {

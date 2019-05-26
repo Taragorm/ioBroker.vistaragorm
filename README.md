@@ -32,34 +32,55 @@ These are controls whose background colour changes to represent one or more of t
  * Value may be custom formatted (sprintf-like syntax)
  * Background colour depends on value of 1st item.
  * Background colour change can have sharp trasitions, or be interpolated
- * Background is a radial blend, with the mv coulr being the centre of the widget, and the outer colour being the sp derived colour. This gives a simeple 
+ * Background is a radial blend, with the mv color being the centre of the widget, and the outer colour being the sp derived colour. 
+ * If `offSp` is set, setpoints below this value will be suppressed for two-colour blends, and only the `mv` will be used.
 
 
-## common - colour scale.
+### Colour Generation - `colours` and `interpolate`
 
-The ``colours`` attribute can take one of two forms, a predefined scale name, or a JSON representation of the scale.
-
-### Predefined scales
-
-| Scale Name | description |
-| ----------- | ----------- |
-| $indoor    | Indoor celcius |
-| $outdoor   | Outdoor celcius |
-
-
-### JSON scale
-A JSON temperature scale is an array of objects as follows:
+Colours are generated from a list of switch points and colour codes, e.g.
 
 ```json
-[
-    { t:15, b: 0x6060ff },
-    { t:18, b: 0x00c000 },
-    { t:19, b: 0xb0b000 },
-    { t:22, b: 0xff0000 }
-]
+    $indoor: [
+    	{ t:15, b: 0x1E90FF, f:0x0000 },
+    	{ t:18, b: 0x0bb000, f:0x0000 },
+    	{ t:21, b: 0xdddd00, f:0x0000 },
+    	{ t:24, b: 0xff0000, f:0x0000 }
+    ],    
+
+    $outdoor: [
+    	{ t:8,  b: 0x1E90FF, f:0x0000 },
+    	{ t:12, b: 0x00bb00, f:0x0000 },
+    	{ t:18, b: 0xdddd00, f:0x0000 },
+    	{ t:22, b: 0xff0000, f:0x0000 }
+    ],    
+
+```
+Where `t` = temperature, `b` = background colour and `f` = foreground colour. The colours MUST be numeric codes. (You can't use colour names like "green" for instance.)
+
+ * The colours can be configured using the `colours` attribute. You can set `$indoor` (the default) `$outdoor` or a custom vector as described below .
+ * Setting the `interpolate` attribute means the widget will try to work out intermediate colours if the temperature lies between two values.
+ * The default is `$indoor`
+
+#### Custom Colour Vector
+
+```
+10 blue
+15 green
+30 red white
 ```
 
-where ``t`` denotes the temperature and ``b`` denotes the background colour code, as a number. 
+If the `colours` attribute does not start with `$`, then it is assumed to be a list of switchpoints and associated colour(s), one per line, with each line having the format:
+
+```
+<SwitchValue> <Background> [<Foreground>]
+```
+
+ * The switch value should be a number - rows should be in ascending order
+ * The colours may be:
+   * A HTML colour name
+   * A 6 digit hex colour code e.g. #ff55ff
+ * The default foreground is black
 
 ## Changelog
 
