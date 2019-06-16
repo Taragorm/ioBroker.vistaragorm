@@ -384,10 +384,10 @@ vis.binds["vistaragorm_hilo"] = {
             var html_n = data.htmlNormal;
             var html_h = data.htmlHi;
             var html_hh = data.htmlHiHi;
-            var lim_ll = data.lolo;
-            var lim_l = data.lo;
-            var lim_h = data.hi;
-            var lim_hh = data.hihi;
+            var lim_ll = parseFloat(data.lolo);
+            var lim_l = parseFloat(data.lo);
+            var lim_h = parseFloat(data.hi);
+            var lim_hh = parseFloat(data.hihi);
             
 
             // if nothing found => wait
