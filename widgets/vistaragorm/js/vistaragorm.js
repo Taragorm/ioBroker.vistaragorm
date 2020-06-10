@@ -364,6 +364,7 @@ vis.binds["vistaragorm_bool"] = {
     }
 }
 
+//=======================================================
 vis.binds["vistaragorm_hilo"] = {
     version: "0.0.1",
     
@@ -453,6 +454,108 @@ vis.binds["vistaragorm_hilo"] = {
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     }
 }
+//=======================================================
+vis.binds["vistaragorm_bq"] = {
+    version: "0.0.1",
+    
+    //--------------------------------------------------------------------------------------
+    showVersion: function () {
+        if (vis.binds["vistaragorm_bq"].version) {
+            console.log('Version vistaragorm_bq: ' + vis.binds["vistaragorm_bq"].version);
+            vis.binds["vistaragorm_bq"].version = null;
+        }
+    },
+    
+    //--------------------------------------------------------------------------------------
+    createWidget: function (widgetID, view, data, style) {
+        try {
+            var $div = $('#' + widgetID);
+
+            var htmlGood = data.htmlGood;
+            var htmlStale = data.htmlStale;
+            var htmlBad = data.htmlBad;
+            var lastState;
+            var oid = data.oid;
+            var stale_age_ms = data.stale_age_sec*1000;
+            var bad_age_ms = data.bad_age_sec*1000;
+            var last_ts;
+
+            // if nothing found => wait
+            if (!$div.length) {
+                return setTimeout(function () {
+                    vis.binds["vistaragorm_bq"].createWidget(widgetID, view, data, style);
+                }, 100);
+            }
+            
+            //console.log("Create mvsp");
+    
+            var text = `<span class="vis-tara-span">&hearts;</span>`;
+            
+            $('#' + widgetID).html(text);
+
+            var $span = $div.find(".vis-tara-span");
+
+            // subscribe on updates of timestamps
+            let bound = [];
+            if (data.oid) {
+
+                var oidts = data.oid + ".ts";
+                bound.push(oidts );
+                vis.states.bind(oidts, function (e, newVal, oldVal) {
+                    _setts(newVal);
+                });
+
+                setInterval(function() {
+                        _update();
+                    }, 
+                    data.updateSec*1000
+                );
+
+            }
+
+            if(bound.length) {
+                $div.data('bound', bound);
+                $div.data('bindHandler', _setts);
+            }
+
+            _setts(vis.states[oidts]);            
+            _update();            
+
+        } catch(ex) {
+            console.error(ex);
+        }
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function _setts(v) {
+            last_ts = v;
+            //console.error(v);
+        }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function _update() {
+            try {
+                var d = new Date();
+                var n = d.getTime() - last_ts;     
+                var state;       
+
+                if(n<=stale_age_ms)
+                    state = htmlGood;
+                else if(n<=bad_age_ms)
+                    state = htmlStale;
+                else
+                    state = htmlBad;
+
+                if(state != lastState)
+                {
+                    lastState = state;
+                    $span.html( state );
+                }
+            } catch(ex) {
+                console.error(ex);            
+            }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        }
+    }
+}
 
 
 vis.binds["vistaragorm_nbox"].showVersion();
@@ -460,5 +563,6 @@ vis.binds["vistaragorm_mvsp"].showVersion();
 vis.binds["vistaragorm_htmltoggle"].showVersion();
 vis.binds["vistaragorm_bool"].showVersion();
 vis.binds["vistaragorm_hilo"].showVersion();
+vis.binds["vistaragorm_bq"].showVersion();
 
 

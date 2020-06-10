@@ -81,5 +81,18 @@
     %></div>
 </script>
 
+<script id="tplVistaragormHelper_bq"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='[BQ]"'
+        data-vis-attrs="oid/id;stale_age_sec;bad_age_sec;htmlGood/html[OK];htmlStale/html[ST];htmlBad/html[BQ];updateSec[10]"
+        data-vis-set="vistaragorm"
+        data-vis-type="val"
+        data-vis-name="HTML Data Quality indicator">
+    <div class="vis-widget <%== this.data.attr('class') %>" style="overflow:visible; width: 20px; height: 20px" id="<%= this.data.attr('wid') %>"><%
+        vis.binds.vistaragorm_bq.createWidget(this.data.wid, this.view, this.data, this.style);
+    %></div>
+</script>
+
 
 
