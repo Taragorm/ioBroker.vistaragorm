@@ -1,6 +1,6 @@
 {
   "name": "iobroker.vistaragorm",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Some simple Visualisations",
   "author": {
     "name": "Taragorm",
@@ -17,12 +17,12 @@
     "url": "https://github.com/Taragorm/ioBroker.vistaragorm"
   },
   "dependencies": {
-  "sprintf-js" : "^1.1.2"
+    "sprintf-js": "^1.1.2"
   },
   "devDependencies": {
-    "@iobroker/testing": "^1.2.0",
+    "@iobroker/testing": "^2.2.0",
     "@types/gulp": "^4.0.6",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "gulp": "^4.0.0"
   },
   "main": "widgets/vistaragorm.html",
